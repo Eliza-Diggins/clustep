@@ -69,6 +69,7 @@ def init():
            action='store_true')
   flags.add_argument('-o', help='The name of the output file.',
            metavar="init.dat", default="init.dat")
+  flags.add_argument("-i",help="The initial file to read from",metavar="init.ini",default="params_cluster.ini")
   flags.add_argument('--hdf5', help='Writes output in HDF5 format. If\
            this flag is not parsed, the programs defaults to Gadget2\
            bynary format', action='store_true')
@@ -81,8 +82,8 @@ def init():
 
   output = args.o
 
-  if not path.isfile("params_cluster.ini"):
-    print( "params_cluster.ini missing.")
+  if not path.isfile(args.i):
+    print( "%S missing."%args.i)
     exit(0)
   if args.no_dm:
     if args.no_gas:
@@ -98,7 +99,7 @@ def init():
     gas = True
     dm = True
   config = configparser.ConfigParser(inline_comment_prefixes=';')
-  config.read("params_cluster.ini")
+  config.read(args.i)
   M_dm = config.getfloat('dark_matter', 'M_dm')
   a_dm = config.getfloat('dark_matter', 'a_dm')
   N_dm = config.getint('dark_matter', 'N_dm')
